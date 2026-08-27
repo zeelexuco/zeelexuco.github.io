@@ -1,29 +1,100 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZEE LEXU.CO - Marketplace</title>
-<style>body{margin:0;background:#000;color:#fff;font-family:sans-serif}header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#111;border-bottom:1px solid #222;position:sticky;top:0}.logo{font-weight:bold;color:#fde047}.btn{padding:8px 14px;background:#fde047;color:#000;border:none;border-radius:20px;font-weight:bold;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#111;border-radius:12px;overflow:hidden;border:1px solid #222}.card img{width:100%;height:150px;object-fit:cover}.info{padding:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:99}.modal.show{display:flex}.box{background:#111;padding:20px;border-radius:16px;width:90%;max-width:350px;border:1px solid #333} input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff;box-sizing:border-box}.tab{display:inline-block;padding:6px 10px;background:#222;border-radius:8px;margin-right:5px;cursor:pointer}.tab.active{background:#fde047;color:#000}</style></head><body>
-<header><div class="logo">ZEE LEXU.CO</div><div><span id="cartBtn" style="display:none;margin-right:10px;cursor:pointer" onclick="viewCart()">🛒 <span id="cartCount">0</span></span><button class="btn" id="loginBtn" onclick="openLogin()">Login</button><button class="btn" id="logoutBtn" style="display:none;background:#333;color:#fff" onclick="logout()">Logout</button></div></header>
-<div style="text-align:center;padding:10px"><h2 style="color:#fde047;margin:5px">ZEE LEXU.CO</h2><div style="font-size:13px;color:#aaa">Marketplace - WhatsApp & Paystack<br>07013287677</div></div>
-<div style="background:#fde047;color:#000;text-align:center;padding:6px;font-size:12px">FREE DELIVERY IN LAGOS - Orders above ₦50,000 | WhatsApp: 07013287677</div>
-<div class="grid" id="products"></div>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZEE LEXU.CO</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial,sans-serif}
+header{display:flex;justify-content:space-between;padding:12px;background:#111;border-bottom:1px solid #333;position:sticky;top:0;z-index:10}
+.logo{color:#fde047;font-weight:bold}
+.btn{background:#fde047;color:#000;border:0;padding:8px 14px;border-radius:20px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.card{background:#111;border:1px solid #222;border-radius:12px;overflow:hidden}
+.card img{width:100%;height:140px;object-fit:cover}
+.info{padding:10px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:999}
+.modal.open{display:flex}
+.box{background:#111;border:1px solid #333;padding:20px;border-radius:16px;width:90%;max-width:340px}
+input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #333;background:#000;color:#fff;box-sizing:border-box}
+</style></head><body>
+<header>
+<div class="logo">ZEE LEXU.CO</div>
+<div>
+<span id="cartIcon" style="display:none;margin-right:10px" onclick="alert('Cart: '+cart.length+' items - Total ₦'+cart.reduce((a,b)=>a+b.price,0))">🛒 <b id="cartNum">0</b></span>
+<button class="btn" id="btnLogin" onclick="document.getElementById('loginBox').classList.add('open')">Login</button>
+<button class="btn" id="btnLogout" style="display:none;background:#333;color:#fff" onclick="doLogout()">Logout</button>
+</div>
+</header>
+<h2 style="text-align:center;color:#fde047;margin:10px 0 0">ZEE LEXU.CO</h2>
+<p style="text-align:center;color:#888;font-size:12px;margin:2px">07013287677 - Marketplace</p>
+<div style="background:#fde047;color:#000;text-align:center;padding:6px;font-size:11px">FREE DELIVERY IN LAGOS above ₦50k</div>
+<div class="grid" id="grid"></div>
 
-<div class="modal" id="loginModal"><div class="box"><div style="display:flex;justify-content:space-between"><h3>Welcome Back</h3><span onclick="closeLogin()" style="cursor:pointer">X</span></div><div><span class="tab active" onclick="switchTab('email')" id="tEmail">Email</span><span class="tab" onclick="switchTab('phone')" id="tPhone">Phone</span><span class="tab" onclick="switchTab('google')" id="tGoogle">Google</span></div><div id="emailForm"><input id="lEmail" placeholder="Email"><input id="lPass" type="password" placeholder="Password"><button class="btn" style="width:100%;margin-top:10px" onclick="doLogin()">Continue</button><p style="font-size:12px">No account? <span style="color:#fde047;cursor:pointer" onclick="showCreate()">Create account</span></p></div><div id="createForm" style="display:none"><input id="cEmail" placeholder="Email"><input id="cPass" type="password" placeholder="Password (6+ chars)"><button class="btn" style="width:100%;margin-top:10px" onclick="doCreate()">Create Account</button><p style="font-size:12px">Have account? <span style="color:#fde047;cursor:pointer" onclick="showLogin()">Login</span></p></div><p id="msg" style="font-size:12px;color:#fde047"></p></div></div>
+<div class="modal" id="loginBox"><div class="box">
+<div style="display:flex;justify-content:space-between"><h3 style="margin:0">Welcome Back</h3><span onclick="document.getElementById('loginBox').classList.remove('open')" style="cursor:pointer">X</span></div>
+<p style="color:#888;font-size:12px" id="loginStatus">Login to buy</p>
+<input id="email" placeholder="Email (e.g. you@gmail.com)">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn" style="width:100%;margin-top:10px;padding:12px" onclick="login()">Continue - Login</button>
+<button class="btn" style="width:100%;margin-top:8px;background:#222;color:#fff;padding:12px" onclick="createAcc()">Create Account</button>
+<p id="msg" style="color:#fde047;font-size:13px;min-height:20px"></p>
+</div></div>
 
 <script>
-let users=JSON.parse(localStorage.getItem('zl_users')||'[]');
-let prods=JSON.parse(localStorage.getItem('zl_v6_products')||'[{"id":1,"name":"Gold Chain","price":25000,"img":"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"}]');
-let cart=JSON.parse(localStorage.getItem('zl_cart')||'[]');
-let currentUser=localStorage.getItem('zl_current_user')||null;
+var products = JSON.parse(localStorage.getItem('zl_v6_products')||'null') || [{id:1,name:"Gold Chain",price:25000,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"}];
+var users = JSON.parse(localStorage.getItem('zl_users_final')||'[]');
+var cart = JSON.parse(localStorage.getItem('zl_cart_final')||'[]');
+var current = localStorage.getItem('zl_current_final');
 
-function render(){document.getElementById('products').innerHTML=prods.map(p=>`<div class=card><img src="${p.img}"><div class=info><b>${p.name}</b><br><span style="color:#fde047">₦${p.price.toLocaleString()}</span><br><small style="color:#888">Seller: admin@zeelexuco.com</small><br><button class=btn style="width:100%;margin-top:8px" onclick="buy(${p.id})">Buy Now</button></div></div>`).join('');updateUI()}
-function updateUI(){document.getElementById('cartCount').innerText=cart.length;if(currentUser){document.getElementById('loginBtn').style.display='none';document.getElementById('logoutBtn').style.display='inline-block';document.getElementById('cartBtn').style.display='inline-block';document.getElementById('logoutBtn').innerText='Hi, '+currentUser.split('@')[0]}else{document.getElementById('loginBtn').style.display='inline-block';document.getElementById('logoutBtn').style.display='none';document.getElementById('cartBtn').style.display='none'}}
-function buy(id){if(!currentUser){openLogin();document.getElementById('msg').innerText='Please login first to buy!';return}let p=prods.find(x=>x.id===id);cart.push(p);localStorage.setItem('zl_cart',JSON.stringify(cart));updateUI();alert(p.name+' added to cart! 🛒');}
-function viewCart(){alert('Cart has '+cart.length+' items: '+cart.map(c=>c.name).join(', ')+'\nTotal: ₦'+cart.reduce((a,b)=>a+b.price,0).toLocaleString())}
-function openLogin(){document.getElementById('loginModal').classList.add('show')}function closeLogin(){document.getElementById('loginModal').classList.remove('show')}
-function switchTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');if(t==='google'){document.getElementById('msg').innerText='Google login coming soon - use Email for now'}}
-function showCreate(){document.getElementById('emailForm').style.display='none';document.getElementById('createForm').style.display='block'}function showLogin(){document.getElementById('createForm').style.display='none';document.getElementById('emailForm').style.display='block'}
-function doCreate(){let e=document.getElementById('cEmail').value.trim(),p=document.getElementById('cPass').value;if(!e||p.length<6){document.getElementById('msg').innerText='❌ Email and 6+ password needed';return}if(users.find(u=>u.email===e)){document.getElementById('msg').innerText='❌ Account exists, please login';return}users.push({email:e,pass:p});localStorage.setItem('zl_users',JSON.stringify(users));document.getElementById('msg').innerText='✅ Account created! Now login';showLogin()}
-function doLogin(){let e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;let u=users.find(x=>x.email===e);if(!u){document.getElementById('msg').innerText='❌ No account found, create account first';return}if(u.pass!==p){document.getElementById('msg').innerText='❌ Incorrect password!';return}currentUser=e;localStorage.setItem('zl_current_user',e);document.getElementById('msg').innerText='✅ Login success! Welcome '+e;setTimeout(()=>{closeLogin();updateUI()},1000)}
-function logout(){localStorage.removeItem('zl_current_user');currentUser=null;cart=[];localStorage.setItem('zl_cart','[]');updateUI();alert('Logged out')}
-render();
+function draw(){
+ var g=document.getElementById('grid');
+ g.innerHTML="";
+ for(var i=0;i<products.length;i++){
+   var p=products[i];
+   g.innerHTML+='<div class=card><img src="'+p.img+'"><div class=info><b>'+p.name+'</b><br><span style=color:#fde047>₦'+p.price.toLocaleString()+'</span><br><button class=btn style=width:100%;margin-top:8px onclick="addToCart('+p.id+')">Buy Now</button></div></div>';
+ }
+ document.getElementById('cartNum').innerText=cart.length;
+ if(current){
+   document.getElementById('btnLogin').style.display='none';
+   document.getElementById('btnLogout').style.display='inline-block';
+   document.getElementById('cartIcon').style.display='inline-block';
+   document.getElementById('btnLogout').innerText='Hi, '+current.split('@')[0];
+   document.getElementById('loginStatus').innerText='Logged as: '+current;
+ }else{
+   document.getElementById('btnLogin').style.display='inline-block';
+   document.getElementById('btnLogout').style.display='none';
+   document.getElementById('cartIcon').style.display='none';
+ }
+}
+function addToCart(id){
+ if(!current){document.getElementById('loginBox').classList.add('open');document.getElementById('msg').innerText='Please login first!';return;}
+ var prod=products.find(function(x){return x.id==id});
+ cart.push(prod);
+ localStorage.setItem('zl_cart_final',JSON.stringify(cart));
+ draw();
+ alert(prod.name+' added! 🛒 Cart now '+cart.length);
+}
+function createAcc(){
+ var e=document.getElementById('email').value.trim().toLowerCase();
+ var p=document.getElementById('pass').value;
+ if(e==''||p.length<4){document.getElementById('msg').innerText='❌ Enter email and 4+ password';return;}
+ if(users.find(function(u){return u.email==e})){document.getElementById('msg').innerText='❌ Account exists, tap Login';return;}
+ users.push({email:e,pass:p});
+ localStorage.setItem('zl_users_final',JSON.stringify(users));
+ document.getElementById('msg').innerText='✅ Account created! Now tap Login button below';
+}
+function login(){
+ var e=document.getElementById('email').value.trim().toLowerCase();
+ var p=document.getElementById('pass').value;
+ var u=users.find(function(x){return x.email==e});
+ if(!u){document.getElementById('msg').innerText='❌ No account, tap Create Account first';return;}
+ if(u.pass!=p){document.getElementById('msg').innerText='❌ Wrong password!';return;}
+ current=e;
+ localStorage.setItem('zl_current_final',e);
+ document.getElementById('msg').innerText='✅ Success! Welcome '+e;
+ setTimeout(function(){document.getElementById('loginBox').classList.remove('open');draw();},800);
+}
+function doLogout(){
+ localStorage.removeItem('zl_current_final');
+ current=null;cart=[];localStorage.setItem('zl_cart_final','[]');draw();alert('Logged out');
+}
+draw();
 </script></body></html>
