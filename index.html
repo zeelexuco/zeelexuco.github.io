@@ -1,144 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ZEE LEXU.CO - Marketplace</title>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#0f0f0f;color:#fff}
-.top-banner{background:#fde047;color:#000;text-align:center;padding:8px;font-weight:800;font-size:13px}
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#000;border-bottom:1px solid #333;position:sticky;top:0;z-index:10}
-.logo{font-weight:900;font-size:22px}.logo span{color:#fde047}
-.btn{padding:8px 16px;border-radius:20px;border:1px solid #fde047;background:transparent;color:#fde047;font-weight:700;cursor:pointer}
-.btn-yellow{background:#fde047;color:#000;border:none}
-.hero{text-align:center;padding:24px 16px}
-.hero h1{font-size:32px}.hero h1 span{color:#fde047}
-.hero p{color:#aaa;margin:6px 0}.hero.phone{color:#4ade80;font-weight:700}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
-.card{background:#1a1a1a;border-radius:16px;padding:10px}
-.card img{width:100%;height:150px;object-fit:cover;border-radius:12px;background:#222}
-.card h3{margin:8px 0 4px;font-size:15px}
-.price{color:#fde047;font-weight:800}
-.seller{font-size:11px;color:#888}
-.buy{width:100%;margin-top:8px;padding:10px;background:#fde047;border:none;border-radius:20px;font-weight:800;cursor:pointer}
-#authModal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:99;padding:16px}
-.modal-box{background:#1a1a1a;width:100%;max-width:380px;border-radius:20px;padding:20px;border:1px solid #333}
-.tabs{display:flex;gap:6px;margin:12px 0}
-.tab{flex:1;padding:8px;border-radius:10px;border:1px solid #333;background:#222;color:#aaa;cursor:pointer;font-weight:700;font-size:13px}
-.tab.active{background:#fde047;color:#000;border-color:#fde047}
-input{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:#fff;margin:6px 0}
-.error{color:#f87171;font-size:12px;min-height:16px;margin:4px 0}
-.success{color:#4ade80;font-size:12px}
-.small{font-size:12px;color:#aaa;text-align:center;margin-top:10px}
-.small a{color:#fde047;cursor:pointer}
-</style>
-</head>
-<body>
-<div class="top-banner">🚚 FREE DELIVERY IN LAGOS - Orders above ₦50,000 | WhatsApp: 07013287677</div>
-<header>
-<div class="logo">ZEE <span>LEXU.CO</span></div>
-<div><button class="btn" onclick="openAuth('login')">Login
-</header>
-<div class="hero">
-<h1>ZEE <span>LEXU.CO</span></h1>
-<p>Marketplace - WhatsApp & Paystack</p>
-<p class="phone">07013287677</p>
-</div>
-<div class="products" id="productList"></div>
-<div id="authModal">
-<div class="modal-box">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 id="authTitle">Welcome Back</h3><span onclick="closeAuth()" style="cursor:pointer;font-size:20px">✕</span></div>
-<div class="tabs">
-<button class="tab active" id="tabEmail" onclick="switchTab('email')">Email</button>
-<button class="tab" id="tabPhone" onclick="switchTab('phone')">Phone</button>
-<button class="tab" id="tabGoogle" onclick="switchTab('google')">Google</button>
-</div>
-<div id="googleBtnWrap" style="display:none;text-align:center">
-<div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com" data-callback="handleGoogle"></div>
-<div class="g_id_signin" data-type="standard" data-theme="filled_black" data-size="large" data-width="340"></div>
-<p class="small">Or use Google One-Tap - fastest login</p>
-<button class="buy" onclick="mockGoogleLogin()">Continue with Google (Demo)</button>
-<p class="small">To enable real Google login, add your Google Client ID in code. Demo works now.</p>
-</div>
-<div id="formWrap">
-<div id="err" class="error"></div>
-<input id="inpEmail" type="email" placeholder="Email address" style="display:block">
-<input id="inpPhone" type="tel" placeholder="Phone e.g. 07013287677" style="display:none">
-<input id="inpPass" type="password" placeholder="Password">
-<input id="inpConfirm" type="password" placeholder="Confirm Password" style="display:none">
-<button class="buy" onclick="submitAuth()">Continue</button>
-<p class="small" id="switchLine">No account? <a onclick="toggleMode()">Create account</a></p>
-</div>
-<div id="ok" class="success"></div>
-</div>
-</div>
+<style>body{margin:0;background:#000;color:#fff;font-family:sans-serif}header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#111;border-bottom:1px solid #222;position:sticky;top:0}.logo{font-weight:bold;color:#fde047}.btn{padding:8px 14px;background:#fde047;color:#000;border:none;border-radius:20px;font-weight:bold;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#111;border-radius:12px;overflow:hidden;border:1px solid #222}.card img{width:100%;height:150px;object-fit:cover}.info{padding:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:99}.modal.show{display:flex}.box{background:#111;padding:20px;border-radius:16px;width:90%;max-width:350px;border:1px solid #333} input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff;box-sizing:border-box}.tab{display:inline-block;padding:6px 10px;background:#222;border-radius:8px;margin-right:5px;cursor:pointer}.tab.active{background:#fde047;color:#000}</style></head><body>
+<header><div class="logo">ZEE LEXU.CO</div><div><span id="cartBtn" style="display:none;margin-right:10px;cursor:pointer" onclick="viewCart()">🛒 <span id="cartCount">0</span></span><button class="btn" id="loginBtn" onclick="openLogin()">Login</button><button class="btn" id="logoutBtn" style="display:none;background:#333;color:#fff" onclick="logout()">Logout</button></div></header>
+<div style="text-align:center;padding:10px"><h2 style="color:#fde047;margin:5px">ZEE LEXU.CO</h2><div style="font-size:13px;color:#aaa">Marketplace - WhatsApp & Paystack<br>07013287677</div></div>
+<div style="background:#fde047;color:#000;text-align:center;padding:6px;font-size:12px">FREE DELIVERY IN LAGOS - Orders above ₦50,000 | WhatsApp: 07013287677</div>
+<div class="grid" id="products"></div>
+
+<div class="modal" id="loginModal"><div class="box"><div style="display:flex;justify-content:space-between"><h3>Welcome Back</h3><span onclick="closeLogin()" style="cursor:pointer">X</span></div><div><span class="tab active" onclick="switchTab('email')" id="tEmail">Email</span><span class="tab" onclick="switchTab('phone')" id="tPhone">Phone</span><span class="tab" onclick="switchTab('google')" id="tGoogle">Google</span></div><div id="emailForm"><input id="lEmail" placeholder="Email"><input id="lPass" type="password" placeholder="Password"><button class="btn" style="width:100%;margin-top:10px" onclick="doLogin()">Continue</button><p style="font-size:12px">No account? <span style="color:#fde047;cursor:pointer" onclick="showCreate()">Create account</span></p></div><div id="createForm" style="display:none"><input id="cEmail" placeholder="Email"><input id="cPass" type="password" placeholder="Password (6+ chars)"><button class="btn" style="width:100%;margin-top:10px" onclick="doCreate()">Create Account</button><p style="font-size:12px">Have account? <span style="color:#fde047;cursor:pointer" onclick="showLogin()">Login</span></p></div><p id="msg" style="font-size:12px;color:#fde047"></p></div></div>
+
 <script>
-let mode='login'; let currentTab='email';
-let users = JSON.parse(localStorage.getItem('zl_users')||'{}');
-function saveUsers(){localStorage.setItem('zl_users',JSON.stringify(users))}
-function switchTab(t){
-currentTab=t;
-document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');
-document.getElementById('inpEmail').style.display = t==='email'? 'block':'none';
-document.getElementById('inpPhone').style.display = t==='phone'? 'block':'none';
-document.getElementById('googleBtnWrap').style.display = t==='google'? 'block':'none';
-document.getElementById('formWrap').style.display = t==='google'? 'none':'block';
-document.getElementById('err').innerText='';
-}
-function openAuth(m){mode=m==='admin'?'login':m;document.getElementById('authModal').style.display='flex';renderAuth();}
-function closeAuth(){document.getElementById('authModal').style.display='none'}
-function toggleMode(){mode = mode==='login'? 'signup' : 'login';renderAuth();}
-function renderAuth(){
-document.getElementById('authTitle').innerText = mode==='login'?'Welcome Back':'Create Account';
-document.getElementById('inpConfirm').style.display = mode==='signup'? 'block':'none';
-document.getElementById('switchLine').innerHTML = mode==='login'? 'No account? <a onclick="toggleMode()">Create account</a>' : 'Have account? <a onclick="toggleMode()">Login</a>';
-document.getElementById('err').innerText=''; document.getElementById('ok').innerText='';
-}
-function submitAuth(){
-let email=document.getElementById('inpEmail').value.trim().toLowerCase();
-let phone=document.getElementById('inpPhone').value.trim();
-let pass=document.getElementById('inpPass').value;
-let confirm=document.getElementById('inpConfirm').value;
-let key = currentTab==='email'? email : phone;
-let err=document.getElementById('err');
-if(currentTab==='email' &&!email.includes('@')){err.innerText='Enter valid email';return}
-if(currentTab==='phone' && phone.length<10){err.innerText='Enter valid phone number';return}
-if(!pass || pass.length<6){err.innerText='Password must be at least 6 characters';return}
-if(mode==='signup'){
-if(users[key]){err.innerText='Account already exists. Please login.';return}
-if(pass!==confirm){err.innerText='Passwords do not match';return}
-users[key]={pass, email, phone, created:Date.now(), provider:currentTab};
-saveUsers();
-document.getElementById('ok').innerText='Account created! Logging you in...';
-setTimeout(()=>{doLogin(key)},800);
-}else{
-if(!users[key]){err.innerText='Account not found. Please create account first.';return}
-if(users[key].pass!==pass){err.innerText='Incorrect password. Use the password you created with.';return}
-doLogin(key);
-}
-}
-function doLogin(key){
-localStorage.setItem('zl_current', JSON.stringify(users[key]));
-document.getElementById('ok').innerText='Login successful! Welcome '+(users[key].email||users[key].phone);
-setTimeout(()=>{closeAuth();},1000);
-}
-function mockGoogleLogin(){
-let gEmail='google_user_'+Math.floor(Math.random()*1000)+'@gmail.com';
-users[gEmail]={pass:'google_oauth_no_password', email:gEmail, provider:'google', created:Date.now()};
-saveUsers(); doLogin(gEmail);
-}
-function handleGoogle(resp){
-try{
-let payload = JSON.parse(atob(resp.credential.split('.')[1]));
-let email=payload.email;
-if(!users[email]){users[email]={pass:'google_oauth_no_password', email, provider:'google', name:payload.name} ; saveUsers();}
-doLogin(email);
-}catch(e){mockGoogleLogin();}
-}
-let prods=[{name:'Gold Chain',price:25000,img:'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400'}];
-document.getElementById('productList').innerHTML=prods.map(p=>`<div class="card"><img src="${p.img}"><h3>${p.name}</h3><div class="price">₦${p.price.toLocaleString()}</div><div class="seller">Seller: admin@zeelexuco.com</div><button class="buy">Buy Now</button></div>`).join('');
-</script>
-</body>
-</html>
+let users=JSON.parse(localStorage.getItem('zl_users')||'[]');
+let prods=JSON.parse(localStorage.getItem('zl_v6_products')||'[{"id":1,"name":"Gold Chain","price":25000,"img":"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"}]');
+let cart=JSON.parse(localStorage.getItem('zl_cart')||'[]');
+let currentUser=localStorage.getItem('zl_current_user')||null;
+
+function render(){document.getElementById('products').innerHTML=prods.map(p=>`<div class=card><img src="${p.img}"><div class=info><b>${p.name}</b><br><span style="color:#fde047">₦${p.price.toLocaleString()}</span><br><small style="color:#888">Seller: admin@zeelexuco.com</small><br><button class=btn style="width:100%;margin-top:8px" onclick="buy(${p.id})">Buy Now</button></div></div>`).join('');updateUI()}
+function updateUI(){document.getElementById('cartCount').innerText=cart.length;if(currentUser){document.getElementById('loginBtn').style.display='none';document.getElementById('logoutBtn').style.display='inline-block';document.getElementById('cartBtn').style.display='inline-block';document.getElementById('logoutBtn').innerText='Hi, '+currentUser.split('@')[0]}else{document.getElementById('loginBtn').style.display='inline-block';document.getElementById('logoutBtn').style.display='none';document.getElementById('cartBtn').style.display='none'}}
+function buy(id){if(!currentUser){openLogin();document.getElementById('msg').innerText='Please login first to buy!';return}let p=prods.find(x=>x.id===id);cart.push(p);localStorage.setItem('zl_cart',JSON.stringify(cart));updateUI();alert(p.name+' added to cart! 🛒');}
+function viewCart(){alert('Cart has '+cart.length+' items: '+cart.map(c=>c.name).join(', ')+'\nTotal: ₦'+cart.reduce((a,b)=>a+b.price,0).toLocaleString())}
+function openLogin(){document.getElementById('loginModal').classList.add('show')}function closeLogin(){document.getElementById('loginModal').classList.remove('show')}
+function switchTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');if(t==='google'){document.getElementById('msg').innerText='Google login coming soon - use Email for now'}}
+function showCreate(){document.getElementById('emailForm').style.display='none';document.getElementById('createForm').style.display='block'}function showLogin(){document.getElementById('createForm').style.display='none';document.getElementById('emailForm').style.display='block'}
+function doCreate(){let e=document.getElementById('cEmail').value.trim(),p=document.getElementById('cPass').value;if(!e||p.length<6){document.getElementById('msg').innerText='❌ Email and 6+ password needed';return}if(users.find(u=>u.email===e)){document.getElementById('msg').innerText='❌ Account exists, please login';return}users.push({email:e,pass:p});localStorage.setItem('zl_users',JSON.stringify(users));document.getElementById('msg').innerText='✅ Account created! Now login';showLogin()}
+function doLogin(){let e=document.getElementById('lEmail').value.trim(),p=document.getElementById('lPass').value;let u=users.find(x=>x.email===e);if(!u){document.getElementById('msg').innerText='❌ No account found, create account first';return}if(u.pass!==p){document.getElementById('msg').innerText='❌ Incorrect password!';return}currentUser=e;localStorage.setItem('zl_current_user',e);document.getElementById('msg').innerText='✅ Login success! Welcome '+e;setTimeout(()=>{closeLogin();updateUI()},1000)}
+function logout(){localStorage.removeItem('zl_current_user');currentUser=null;cart=[];localStorage.setItem('zl_cart','[]');updateUI();alert('Logged out')}
+render();
+</script></body></html>
