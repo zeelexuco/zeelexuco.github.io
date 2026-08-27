@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Login</title>
+<style>body{background:#000;color:#fff;font-family:sans-serif;display:flex;justify-content:center;padding:40px} .box{background:#111;border:1px solid #333;padding:20px;border-radius:15px;width:350px} input{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff} .btn{width:100%;padding:12px;background:#fde047;border:none;border-radius:20px;font-weight:bold;margin-top:10px}</style></head><body>
+<div class="box"><h2>ZEE LEXU.CO Admin</h2><p style="color:#888;font-size:12px">Owner Only</p><div id="e" style="color:red;font-size:13px"></div>
+<input id="email" value="admin@zeelexuco.com">
+<input id="pass" type="password" placeholder="Password">
+<button class="btn" onclick="login()">Login</button></div>
+<script>function login(){let a=document.getElementById('email').value.toLowerCase(),b=document.getElementById('pass').value;if(a==="admin@zeelexuco.com"&&b==="Zeelexu@2026"){localStorage.setItem('zl_isAdmin','true');document.getElementById('e').style.color='#4f4';document.getElementById('e').innerText='Admin login success!';setTimeout(()=>{location.href='index.html'},1000)}else{document.getElementById('e').innerText='Wrong password'}} </script></body></html>
