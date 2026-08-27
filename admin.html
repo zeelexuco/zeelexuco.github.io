@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Login</title>
-<style>body{background:#000;color:#fff;font-family:sans-serif;display:flex;justify-content:center;padding:40px} .box{background:#111;border:1px solid #333;padding:20px;border-radius:15px;width:350px} input{width:100%;padding:12px;margin:6px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff} .btn{width:100%;padding:12px;background:#fde047;border:none;border-radius:20px;font-weight:bold;margin-top:10px}</style></head><body>
-<div class="box"><h2>ZEE LEXU.CO Admin</h2><p style="color:#888;font-size:12px">Owner Only</p><div id="e" style="color:red;font-size:13px"></div>
-<input id="email" value="admin@zeelexuco.com">
-<input id="pass" type="password" placeholder="Password">
-<button class="btn" onclick="login()">Login</button></div>
-<script>function login(){let a=document.getElementById('email').value.toLowerCase(),b=document.getElementById('pass').value;if(a==="admin@zeelexuco.com"&&b==="Zeelexu@2026"){localStorage.setItem('zl_isAdmin','true');document.getElementById('e').style.color='#4f4';document.getElementById('e').innerText='Admin login success!';setTimeout(()=>{location.href='index.html'},1000)}else{document.getElementById('e').innerText='Wrong password'}} </script></body></html>
+<title>ZEE LEXU.CO - Admin Dashboard</title>
+<style>body{background:#000;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111;border:1px solid #333;padding:15px;border-radius:12px;margin:10px 0} input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff} .btn{padding:10px 15px;background:#fde047;border:none;border-radius:20px;font-weight:bold;cursor:pointer;color:#000} .prod{display:flex;gap:10px;align-items:center;background:#1a1a1a;padding:10px;border-radius:10px;margin:5px 0} img{width:60px;height:60px;object-fit:cover;border-radius:8px}</style></head><body>
+<h1>ZEE LEXU.CO - Admin Dashboard</h1>
+<p id="info" style="color:#aaa"></p>
+<div class="card"><h3>Add New Product</h3>
+<input id="name" placeholder="Product Name (e.g. Gold Ring)">
+<input id="price" type="number" placeholder="Price (e.g. 25000)">
+<input id="img" placeholder="Image URL (or leave empty for default)">
+<textarea id="desc" placeholder="Description"></textarea>
+<button class="btn" onclick="addProd()">Add Product</button></div>
+<div class="card"><h3>All Products (<span id="count">0</span>)</h3><div id="list"></div></div>
+<button class="btn" style="background:#333;color:#fff" onclick="logout()">Logout Admin</button>
+<a href="index.html" class="btn" style="background:#222;color:#fff;text-decoration:none;display:inline-block;margin-left:10px">View Store</a>
+<script>
+let prods=JSON.parse(localStorage.getItem('zl_v6_products')||'[]');
+if(prods.length===0){prods=[{id:1,name:"Gold Chain",price:25000,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400",desc:"Beautiful chain"}];save()}
+document.getElementById('info').innerText='Logged as: admin@zeelexuco.com | Admin Mode: '+localStorage.getItem('zl_isAdmin');
+function save(){localStorage.setItem('zl_v6_products',JSON.stringify(prods));render()}
+function render(){document.getElementById('count').innerText=prods.length;document.getElementById('list').innerHTML=prods.map(p=>`<div class=prod><img src="${p.img}"><div style="flex:1"><b>${p.name}</b><br>₦${p.price.toLocaleString()}</div><button class=btn onclick="del(${p.id})" style="background:red;color:#fff">Delete</button></div>`).join('')}
+function addProd(){let n=document.getElementById('name').value,p=parseInt(document.getElementById('price').value),i=document.getElementById('img').value||'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400',d=document.getElementById('desc').value;if(!n||!p)return alert('Name and price needed');prods.push({id:Date.now(),name:n,price:p,img:i,desc:d});save();document.getElementById('name').value='';document.getElementById('price').value='';alert('Product Added! Go to store to see it') }
+function del(id){if(confirm('Delete?')){prods=prods.filter(x=>x.id!=id);save()}}
+function logout(){localStorage.removeItem('zl_isAdmin');location.href='index.html'}
+render();
+</script></body></html>
