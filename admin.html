@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ZEE LEXU.CO - Admin Dashboard</title>
-<style>body{background:#000;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111;border:1px solid #333;padding:15px;border-radius:12px;margin:10px 0} input,textarea{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff} .btn{padding:10px 15px;background:#fde047;border:none;border-radius:20px;font-weight:bold;cursor:pointer;color:#000} .prod{display:flex;gap:10px;align-items:center;background:#1a1a1a;padding:10px;border-radius:10px;margin:5px 0} img{width:60px;height:60px;object-fit:cover;border-radius:8px}</style></head><body>
+<title>Admin - ZEE LEXU.CO</title>
+<style>body{background:#000;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111;border:1px solid #333;padding:15px;border-radius:12px;margin:10px 0} input{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #333;background:#000;color:#fff} .btn{padding:10px 15px;background:#fde047;border:none;border-radius:20px;font-weight:bold;cursor:pointer;color:#000} .prod{display:flex;gap:10px;align-items:center;background:#1a1a1a;padding:10px;border-radius:10px;margin:5px 0} img{width:60px;height:60px;object-fit:cover;border-radius:8px}</style></head><body>
 <h1>ZEE LEXU.CO - Admin Dashboard</h1>
 <p id="info" style="color:#aaa"></p>
+
+<div class="card"><h3>🔑 Change Admin Password</h3>
+<input id="oldPass" type="password" placeholder="Old Password">
+<input id="newPass" type="password" placeholder="New Password">
+<button class="btn" onclick="changePass()">Change Password</button>
+<p id="passMsg" style="font-size:13px;color:#fde047"></p></div>
+
 <div class="card"><h3>Add New Product</h3>
-<input id="name" placeholder="Product Name (e.g. Gold Ring)">
-<input id="price" type="number" placeholder="Price (e.g. 25000)">
-<input id="img" placeholder="Image URL (or leave empty for default)">
-<textarea id="desc" placeholder="Description"></textarea>
-<button class="btn" onclick="addProd()">Add Product</button></div>
+<input id="name" placeholder="Product Name"><input id="price" type="number" placeholder="Price"><input id="img" placeholder="Image URL (leave empty for default)"><button class="btn" onclick="addProd()">Add Product</button></div>
+
 <div class="card"><h3>All Products (<span id="count">0</span>)</h3><div id="list"></div></div>
-<button class="btn" style="background:#333;color:#fff" onclick="logout()">Logout Admin</button>
-<a href="index.html" class="btn" style="background:#222;color:#fff;text-decoration:none;display:inline-block;margin-left:10px">View Store</a>
+<button class="btn" style="background:#333;color:#fff" onclick="logout()">Logout</button> <a href="index.html" style="color:#fff;margin-left:10px">View Store</a>
+
 <script>
+// PASSWORD SYSTEM
+let defaultPass="Zeelexu@2026";
+let savedPass=localStorage.getItem('zl_admin_pass')||defaultPass;
+if(localStorage.getItem('zl_isAdmin')!=='true'){let e=prompt('Admin Email:'),p=prompt('Admin Password:');if(e.toLowerCase()!=='admin@zeelexuco.com'||p!==savedPass){alert('Wrong admin details!');location.href='index.html'}else{localStorage.setItem('zl_isAdmin','true')}}
+
 let prods=JSON.parse(localStorage.getItem('zl_v6_products')||'[]');
-if(prods.length===0){prods=[{id:1,name:"Gold Chain",price:25000,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400",desc:"Beautiful chain"}];save()}
-document.getElementById('info').innerText='Logged as: admin@zeelexuco.com | Admin Mode: '+localStorage.getItem('zl_isAdmin');
+if(prods.length===0){prods=[{id:1,name:"Gold Chain",price:25000,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"}];save()}
+document.getElementById('info').innerText='Logged as: admin@zeelexuco.com';
 function save(){localStorage.setItem('zl_v6_products',JSON.stringify(prods));render()}
 function render(){document.getElementById('count').innerText=prods.length;document.getElementById('list').innerHTML=prods.map(p=>`<div class=prod><img src="${p.img}"><div style="flex:1"><b>${p.name}</b><br>₦${p.price.toLocaleString()}</div><button class=btn onclick="del(${p.id})" style="background:red;color:#fff">Delete</button></div>`).join('')}
-function addProd(){let n=document.getElementById('name').value,p=parseInt(document.getElementById('price').value),i=document.getElementById('img').value||'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400',d=document.getElementById('desc').value;if(!n||!p)return alert('Name and price needed');prods.push({id:Date.now(),name:n,price:p,img:i,desc:d});save();document.getElementById('name').value='';document.getElementById('price').value='';alert('Product Added! Go to store to see it') }
+function addProd(){let n=document.getElementById('name').value,pr=parseInt(document.getElementById('price').value),im=document.getElementById('img').value||'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400';if(!n||!pr)return alert('Need name+price');prods.push({id:Date.now(),name:n,price:pr,img:im});save();alert('Added!')}
 function del(id){if(confirm('Delete?')){prods=prods.filter(x=>x.id!=id);save()}}
 function logout(){localStorage.removeItem('zl_isAdmin');location.href='index.html'}
+function changePass(){let o=document.getElementById('oldPass').value,n=document.getElementById('newPass').value;if(o!==savedPass){document.getElementById('passMsg').innerText='❌ Old password wrong!';return} if(n.length<6){document.getElementById('passMsg').innerText='❌ New password must be 6+ characters';return} localStorage.setItem('zl_admin_pass',n);savedPass=n;document.getElementById('passMsg').innerText='✅ Password changed to: '+n+' — SAVE IT!';document.getElementById('oldPass').value='';document.getElementById('newPass').value=''}
 render();
 </script></body></html>
