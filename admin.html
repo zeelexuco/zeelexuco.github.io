@@ -2,82 +2,91 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ZL Admin - ZeeleexuCo</title>
+<title>ZL Admin REAL</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
-body{font-family:Arial;background:#111;color:#fff;padding:20px}
-input{width:90%;padding:12px;margin:8px 0;border-radius:8px;border:none}
-button{padding:12px 20px;background:gold;color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer;margin:5px}
+body{font-family:Arial;background:#111;color:#fff;padding:15px}
+input{width:95%;padding:12px;margin:6px 0;border-radius:8px;border:none}
+button{padding:12px 20px;background:gold;color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer}
 #dashboard{display:none}
 .card{background:#222;padding:15px;border-radius:12px;margin:10px 0}
+img{width:100%;border-radius:10px;margin-top:8px}
 </style>
 </head>
 <body>
 
 <div id="loginBox">
 <h2 style="color:gold">ZL CEO LOGIN</h2>
-<input id="email" placeholder="Admin Email" value="adewuyioluwagbenga590@gmail.com">
-<input id="pass" type="password" placeholder="Password" value="adesoyeajike">
-<br>
+<input id="email" placeholder="Email" value="zeeleexu@gmail.com">
+<input id="pass" type="password" placeholder="Password" value="zeeleexu123">
 <button onclick="login()">LOGIN</button>
 <p id="msg"></p>
 </div>
 
 <div id="dashboard">
-<h1 style="color:gold">Welcome Boss! 👑 ZL Dashboard</h1>
-<button onclick="logout()" style="background:red;color:white">Logout</button>
+<h1 style="color:gold">ZL Dashboard REAL ✅</h1>
+<button onclick="logout()" style="background:red;color:#fff">Logout</button>
 
 <div class="card">
-<h3>Add New Product</h3>
-<input id="pname" placeholder="Product Name e.g. Luxury Watch">
+<h3>Add Product (Customer go see am!)</h3>
+<input id="pname" placeholder="Product Name">
 <input id="pprice" placeholder="Price e.g. 50000">
-<input id="pimage" placeholder="Image Link">
-<button onclick="addProduct()">Add Product</button>
+<input id="pimage" placeholder="Paste Image Link from imgbb.com">
+<button onclick="addProduct()">SAVE TO STORE</button>
+<p id="saveMsg"></p>
 </div>
 
-<div class="card">
-<h3>Your Store Link</h3>
-<p>Your customers go here: <br><a href="https://zeeleexuco.github.io" style="color:gold">zeeleexuco.github.io</a></p>
-</div>
-
-<div class="card" id="productList">
-<h3>Products will show here</h3>
-</div>
+<div id="productList"></div>
 </div>
 
 <script>
-const ADMIN_EMAIL = "adewuyioluwagbenga590@gmail.com";
-const ADMIN_PASS = "adesoyeajike";
+// YOUR FIREBASE CONFIG - REPLACE WITH YOURS FROM Firebase Console
+const firebaseConfig = {
+  apiKey: "AIzaSy...YOUR_KEY",
+  authDomain: "zeeleexuco.firebaseapp.com",
+  projectId: "zeeleexuco",
+  storageBucket: "zeeleexuco.appspot.com",
+  messagingSenderId: "123...",
+  appId: "1:123:web:..."
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const ADMIN_EMAIL = "zeeleexu@gmail.com";
+const ADMIN_PASS = "zeeleexu123";
 
 function login(){
- let e = document.getElementById('email').value;
- let p = document.getElementById('pass').value;
- if(e===ADMIN_EMAIL && p===ADMIN_PASS){
-   localStorage.setItem('zl_admin','yes');
-   showDash();
- } else {
-   document.getElementById('msg').innerHTML = "Wrong! Use:<br>Email: adewuyioluwagbenga590@gmail.com<br>Pass: adesoyeajike";
- }
+ if(document.getElementById('email').value===ADMIN_EMAIL && document.getElementById('pass').value===ADMIN_PASS){
+   localStorage.setItem('zl_admin','yes'); showDash(); loadProducts();
+ } else { document.getElementById('msg').innerText="Wrong! Use zeelexu@gmail.com / zeelexu123"; }
+}
+function showDash(){ document.getElementById('loginBox').style.display='none'; document.getElementById('dashboard').style.display='block'; }
+function logout(){ localStorage.removeItem('zl_admin'); location.reload(); }
+
+async function addProduct(){
+ const name = document.getElementById('pname').value;
+ const price = document.getElementById('pprice').value;
+ const image = document.getElementById('pimage').value;
+ if(!name||!price||!image){ alert("Fill all!"); return; }
+ document.getElementById('saveMsg').innerText="Saving...";
+ await db.collection("products").add({name, price, image, time: Date.now()});
+ document.getElementById('saveMsg').innerText="✅ Saved! Customer go see am now!";
+ loadProducts();
 }
 
-function showDash(){
- document.getElementById('loginBox').style.display='none';
- document.getElementById('dashboard').style.display='block';
+async function loadProducts(){
+ const snap = await db.collection("products").orderBy("time","desc").get();
+ let html = "<h3>Products Live in Store:</h3>";
+ snap.forEach(doc=>{
+   let d=doc.data();
+   html+=`<div class="card"><b>${d.name}</b> - ₦${d.price}<br><img src="${d.image}"></div>`;
+ });
+ document.getElementById('productList').innerHTML=html;
 }
 
-function logout(){
- localStorage.removeItem('zl_admin');
- location.reload();
-}
-
-function addProduct(){
- alert("Product Added! (Connect to Firebase later)\nName: " + document.getElementById('pname').value);
-}
-
-// Auto-login if already logged in
-if(localStorage.getItem('zl_admin')==='yes'){
- showDash();
-}
+if(localStorage.getItem('zl_admin')==='yes'){ showDash(); loadProducts(); }
 </script>
-
 </body>
 </html>
