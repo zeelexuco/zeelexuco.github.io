@@ -1,24 +1,87 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ZEE LEXU.CO</title><style>body{margin:0;background:#000;color:#fff;font-family:Arial}header{display:flex;justify-content:space-between;padding:12px;background:#111;position:sticky;top:0;z-index:10}.logo{color:#fde047;font-weight:bold}.btn{background:#fde047;color:#000;border:0;padding:8px 14px;border-radius:20px;font-weight:bold;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.card{background:#111;border:1px solid #222;border-radius:12px;overflow:hidden}.card img{width:100%;height:140px;object-fit:cover}.info{padding:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:999}.modal.open{display:flex}.box{background:#111;border:1px solid #333;padding:20px;border-radius:16px;width:92%;max-width:400px;max-height:85vh;overflow:auto}input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #333;background:#000;color:#fff;box-sizing:border-box}.cart-item{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:14px}</style></head><body>
-<header><div class=logo>ZEE LEXU.CO</div><div><span id=cartIcon style=display:none;margin-right:10px;cursor:pointer;font-size:18px onclick=openCart()>🛒 <b id=cartNum>0</b></span><button class=btn id=btnLogin onclick=document.getElementById('loginBox').classList.add('open')>Login</button><button class=btn id=btnLogout style=display:none;background:#333;color:#fff onclick=doLogout()>Logout</button></div></header>
-<h2 style=text-align:center;color:#fde047;margin:10px 0 0>ZEE LEXU.CO</h2><p style=text-align:center;color:#888;font-size:12px;margin:2px>07013287677 - Marketplace</p><div style=background:#fde047;color:#000;text-align:center;padding:6px;font-size:11px>FREE DELIVERY IN LAGOS above ₦50k</div><div class=grid id=grid></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZEELEXU&CO | Luxury Store</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#070707;color:#fff;font-family:Inter,sans-serif}
+.header{position:sticky;top:0;background:#070707ee;backdrop-filter:blur(10px);display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #222;z-index:10}
+.logo{color:#d4af37;font-weight:800;letter-spacing:2px}.cart-icon{position:relative;background:#111;border:1px solid #333;padding:8px 14px;border-radius:20px;font-size:12px}
+#cartCount{background:#d4af37;color:#000;border-radius:50%;padding:2px 6px;font-size:10px;margin-left:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:#141414;border:1px solid #222;border-radius:12px;overflow:hidden}
+.card img{width:100%;height:170px;object-fit:cover}
+.pad{padding:12px}.pad h4{font-size:11px;letter-spacing:1px}.price{color:#d4af37;font-weight:700;margin:6px 0}
+.add{width:100%;background:#fff;color:#000;border:0;padding:10px;font-weight:800;font-size:11px;border-radius:6px}
+.add.added{background:#d4af37}
+#cartPage{display:none;position:fixed;inset:0;background:#070707;z-index:20;padding:20px;overflow:auto}
+.cart-item{display:flex;gap:12px;background:#141414;padding:12px;border-radius:10px;margin-bottom:10px;border:1px solid #222}
+.cart-item img{width:60px;height:60px;object-fit:cover;border-radius:6px}
+.acc-box{background:#111;border:1px solid #333;border-radius:12px;padding:16px;margin:15px 0}
+.inp{width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;color:#fff;border-radius:8px;margin:8px 0}
+.btn-gold{width:100%;background:#d4af37;color:#000;padding:14px;border:0;border-radius:8px;font-weight:800;margin-top:10px}
+.btn-outline{width:100%;background:#000;color:#fff;border:1px solid #333;padding:12px;border-radius:8px;margin-top:8px}
+.google{background:#fff;color:#000;display:flex;justify-content:center;align-items:center;gap:8px}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">ZEELEXU&CO</div>
+<div class="cart-icon" onclick="openCart()">CART <span id="cartCount">0</span></div>
+</div>
 
-<div class=modal id=loginBox><div class=box><div style=display:flex;justify-content:space-between><h3 style=margin:0>Welcome</h3><span onclick=document.getElementById('loginBox').classList.remove('open')>X</span></div><p style=color:#888;font-size:12px>Login to buy</p><input id=email placeholder=Email><input id=pass type=password placeholder=Password><button class=btn style=width:100%;padding:12px;margin-top:10px onclick=login()>Continue - Login</button><button class=btn style=width:100%;margin-top:8px;background:#222;color:#fff;padding:12px onclick=createAcc()>Create Account</button><p id=msg style=color:#fde047;font-size:13px></p></div></div>
+<div class="grid">
+<div class="card"><img src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400"><div class="pad"><h4>ROLEX PREMIUM</h4><div class="price">₦320,000</div><button class="add" onclick="addCart('ROLEX PREMIUM',320000,this)">ADD TO CART</button></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400"><div class="pad"><h4>18K GOLD CHAIN</h4><div class="price">₦125,000</div><button class="add" onclick="addCart('GOLD CHAIN',125000,this)">ADD TO CART</button></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400"><div class="pad"><h4>DIAMOND RING</h4><div class="price">₦95,000</div><button class="add" onclick="addCart('DIAMOND RING',95000,this)">ADD TO CART</button></div></div>
+<div class="card"><img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400"><div class="pad"><h4>DESIGNER SHADES</h4><div class="price">₦110,000</div><button class="add" onclick="addCart('SHADES',110000,this)">ADD TO CART</button></div></div>
+</div>
 
-<div class=modal id=cartBox><div class=box><div style=display:flex;justify-content:space-between><h3 style=margin:0>Your Cart 🛒</h3><span onclick=document.getElementById('cartBox').classList.remove('open') style=cursor:pointer>X</span></div><div id=cartItems style=margin:15px 0></div><div style=border-top:1px solid #333;padding-top:10px><b>Total: ₦<span id=cartTotal>0</span></b></div><input id=custName placeholder="Your Full Name"><input id=custPhone placeholder="Your Phone Number"><input id=custAddress placeholder="Delivery Address in Lagos"><button class=btn style=width:100%;padding:14px;margin-top:10px;background:#25D366;color:#fff onclick=checkoutWhatsApp()>📱 Checkout via WhatsApp</button><p style=font-size:11px;color:#888;text-align:center>Orders go to: 07013287677</p></div></div>
+<!-- CART & ACCOUNT PAGE -->
+<div id="cartPage">
+<h2 style="color:#d4af37">YOUR CART</h2>
+<div id="cartList" style="margin-top:15px"></div>
+<div id="total" style="color:#d4af37;font-weight:800;font-size:18px;margin:15px 0"></div>
 
-<script src=https://js.paystack.co/v1/inline.js></script>
+<div class="acc-box">
+<h4 id="accTitle">CHECKOUT AS GUEST</h4>
+<p style="font-size:11px;color:#888;margin:5px 0 10px">or create account to track orders</p>
+<input class="inp" id="cName" placeholder="Full Name">
+<input class="inp" id="cPhone" placeholder="Phone Number (e.g 0701...)">
+<input class="inp" id="cEmail" placeholder="Email (optional)">
+<button class="btn-gold" onclick="checkout('guest')">CHECKOUT AS GUEST VIA WHATSAPP</button>
+<button class="btn-outline google" onclick="createAcc()">📧 CREATE ACCOUNT WITH EMAIL</button>
+<button class="btn-outline google" onclick="alert('Google Sign-In go need small backend later - for now use Email! Your account go save for this phone.')">🔵 CONTINUE WITH GOOGLE</button>
+<p style="font-size:10px;color:#555;margin-top:10px;text-align:center">Account saves on this device. Customers fit buy without account.</p>
+</div>
+<button onclick="closeCart()" style="width:100%;background:transparent;color:#666;border:0;padding:15px">← CONTINUE SHOPPING</button>
+</div>
+
 <script>
-var products=JSON.parse(localStorage.getItem('zl_v6_products')||'null')||[{id:1,name:"Gold Chain",price:25000,img:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400"}];
-var users=JSON.parse(localStorage.getItem('zl_users_final')||'[]');
-var cart=JSON.parse(localStorage.getItem('zl_cart_final')||'[]');
-var current=localStorage.getItem('zl_current_final');
-function draw(){var g=document.getElementById('grid');g.innerHTML="";for(var i=0;i<products.length;i++){var p=products[i];g.innerHTML+='<div class=card><img src="'+p.img+'"><div class=info><b>'+p.name+'</b><br><span style=color:#fde047>₦'+p.price.toLocaleString()+'</span><br><button class=btn style=width:100%;margin-top:8px onclick=addToCart('+p.id+')>Buy Now</button></div></div>'}document.getElementById('cartNum').innerText=cart.length;if(current){document.getElementById('btnLogin').style.display='none';document.getElementById('btnLogout').style.display='inline-block';document.getElementById('cartIcon').style.display='inline-block';document.getElementById('btnLogout').innerText='Hi, '+current.split('@')[0]}else{document.getElementById('btnLogin').style.display='inline-block';document.getElementById('btnLogout').style.display='none';document.getElementById('cartIcon').style.display='none'}}
-function addToCart(id){if(!current){document.getElementById('loginBox').classList.add('open');document.getElementById('msg').innerText='Please login first!';return;}var prod=products.find(function(x){return x.id==id});cart.push(prod);localStorage.setItem('zl_cart_final',JSON.stringify(cart));draw();alert(prod.name+' added! 🛒')}
-function openCart(){if(cart.length==0){alert('Cart is empty! Add item first');return;}var html="";var total=0;for(var i=0;i<cart.length;i++){html+='<div class=cart-item><span>'+cart[i].name+'</span><span>₦'+cart[i].price.toLocaleString()+' <span style=color:red;cursor:pointer onclick=removeItem('+i+')> X</span></span></div>';total+=cart[i].price;}document.getElementById('cartItems').innerHTML=html;document.getElementById('cartTotal').innerText=total.toLocaleString();document.getElementById('cartBox').classList.add('open')}
-function removeItem(i){cart.splice(i,1);localStorage.setItem('zl_cart_final',JSON.stringify(cart));draw();openCart()}
-function checkoutWhatsApp(){var name=document.getElementById('custName').value;var phone=document.getElementById('custPhone').value;var addr=document.getElementById('custAddress').value;if(!name||!phone){alert('Please enter name and phone');return;}var total=cart.reduce((a,b)=>a+b.price,0);var items=cart.map(c=>c.name+' (₦'+c.price+')').join(', ');var msg='Hello ZEE LEXU.CO!%0A%0ANew Order:%0AName: '+name+'%0APhone: '+phone+'%0AAddress: '+addr+'%0A%0AItems: '+items+'%0A%0ATotal: ₦'+total+'%0A%0APlease confirm delivery 🙏';window.open('https://wa.me/2347013287677?text='+msg,'_blank')}
-function checkoutPaystack(){var email=current||'customer@zeelexuco.com';var total=cart.reduce((a,b)=>a+b.price,0)*100;var handler=PaystackPop.setup({key:'pk_test_xxxxxxxxxxxxxxxx',email:email,amount:total,currency:'NGN',callback:function(r){alert('Payment success! Ref: '+r.reference+' - We will contact you on WhatsApp');cart=[];localStorage.setItem('zl_cart_final','[]');draw();document.getElementById('cartBox').classList.remove('open')},onClose:function(){alert('Payment cancelled')}});handler.openIframe()}
-function createAcc(){var e=document.getElementById('email').value.trim().toLowerCase();var p=document.getElementById('pass').value;if(e==''||p.length<4){document.getElementById('msg').innerText='❌ Enter email and 4+ password';return;}if(users.find(function(u){return u.email==e})){document.getElementById('msg').innerText='❌ Account exists, tap Login';return;}users.push({email:e,pass:p});localStorage.setItem('zl_users_final',JSON.stringify(users));document.getElementById('msg').innerText='✅ Account created! Now tap Login'}
-function login(){var e=document.getElementById('email').value.trim().toLowerCase();var p=document.getElementById('pass').value;var u=users.find(function(x){return x.email==e});if(!u){document.getElementById('msg').innerText='❌ No account, tap Create Account';return;}if(u.pass!=p){document.getElementById('msg').innerText='❌ Wrong password!';return;}current=e;localStorage.setItem('zl_current_final',e);document.getElementById('msg').innerText='✅ Success!';setTimeout(function(){document.getElementById('loginBox').classList.remove('open');draw()},800)}
-function doLogout(){localStorage.removeItem('zl_current_final');current=null;cart=[];localStorage.setItem('zl_cart_final','[]');draw()}draw();
-</script></body></html>
+let cart=JSON.parse(localStorage.getItem('zee_cart')||'[]');
+function updateCount(){document.getElementById('cartCount').innerText=cart.length;localStorage.setItem('zee_cart',JSON.stringify(cart))}
+function addCart(name,price,btn){cart.push({name,price});updateCount();btn.innerText='ADDED ✓';btn.classList.add('added');setTimeout(()=>{btn.innerText='ADD TO CART';btn.classList.remove('added')},1000)}
+function openCart(){if(cart.length==0){alert('Cart empty! Add products first.');return}let list='';let sum=0;cart.forEach((i,idx)=>{sum+=i.price;list+=`<div class=cart-item><img src=https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=100><div><div style=font-size:12px>${i.name}</div><div style=color:#d4af37;font-size:12px>₦${i.price.toLocaleString()}</div><div style=color:#666;font-size:10px;cursor:pointer' onclick='removeItem(${idx})>Remove</div></div></div>`});document.getElementById('cartList').innerHTML=list;document.getElementById('total').innerText='TOTAL: ₦'+sum.toLocaleString();document.getElementById('cartPage').style.display='block'}
+function closeCart(){document.getElementById('cartPage').style.display='none'}
+function removeItem(i){cart.splice(i,1);updateCount();openCart();if(cart.length==0)closeCart()}
+function checkout(type){
+let name=document.getElementById('cName').value||'Guest';
+let phone=document.getElementById('cPhone').value;
+if(!phone){alert('Abeg put phone number');return}
+let items=cart.map(c=>`• ${c.name} - ₦${c.price.toLocaleString()}`).join('%0A');
+let total=cart.reduce((a,b)=>a+b.price,0);
+let msg=`Hello ZEELEXU&CO! New Order%0A%0AName: ${name}%0APhone: ${phone}%0AType: ${type}%0A%0AItems:%0A${items}%0A%0ATOTAL: ₦${total.toLocaleString()}%0A%0ADeliver to Lagos?`;
+window.open(`https://wa.me/2347013287677?text=${msg}`,'_blank');
+cart=[];updateCount();closeCart();
+}
+function createAcc(){
+let email=document.getElementById('cEmail').value;let name=document.getElementById('cName').value;
+if(!email||!name){alert('Put name and email to create account');return}
+localStorage.setItem('zee_user',JSON.stringify({name,email}));document.getElementById('accTitle').innerText='ACCOUNT CREATED ✓';alert('Account created! Now you fit checkout — e go remember you next time.');
+}
+updateCount();
+let saved=JSON.parse(localStorage.getItem('zee_user')||'null');if(saved){document.getElementById('cName').value=saved.name;document.getElementById('cEmail').value=saved.email;document.getElementById('accTitle').innerText=`WELCOME BACK, ${saved.name.toUpperCase()}`;}
+</script>
+</body>
+</html>
